@@ -7,22 +7,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <body>
-    <form>
-        <div class="form-group">
-          <label for="InputEmail">Email address</label>
-          <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp" placeholder="Enter email">
-          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div>
-        <div class="form-group">
-          <label for="InputPassword">Password</label>
-          <input type="password" class="form-control" id="InputPassword" placeholder="Password">
-        </div>
-        <div class="form-group form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1">
-          <label class="form-check-label" for="exampleCheck1">Check me out</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-6">
+        <p>Inscription</p>
+        <form>
+          <div class="form-group">
+            <label for="signUpEmail">Adresse Email</label>
+            <input type="email" class="form-control" id="signUpEmail" aria-describedby="emailHelp" placeholder="Entrer votre adresse email">
+            <small id="emailHelp" class="form-text text-muted">Votre adresse email vous servira pour vous connecter</small>
+          </div>
+          <div class="form-group">
+            <label for="signUpPassword">Mot de passe</label>
+            <input type="password" class="form-control" id="signUpPassword" placeholder="Mot de passe">
+          </div>
+          <div class="form-group">
+            <label for="signUpNom">Nom de famille</label>
+            <input type="text" class="form-control" id="signUpNom" placeholder="Nom de famille">
+          </div>
+          <div class="form-group">
+            <label for="signUpPrenom">Prénom</label>
+            <input type="text" class="form-control" id="signUpPrenom" placeholder="Prénom">
+          </div>
+          <button type="submit" class="btn btn-primary">Valider</button>
+        </form>
+      </div>
+      <div class="col-6">
+        <p>Connexion</p>
+        <form>
+            <div class="form-group">
+              <label for="loginEmail">Adresse Email</label>
+              <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" placeholder="Entrer votre adresse email">
+            </div>
+            <div class="form-group">
+              <label for="loginPassword">Mot de passe</label>
+              <input type="password" class="form-control" id="loginPassword" placeholder="Mot de passe">
+            </div>
+            <button type="submit" class="btn btn-primary">Valider</button>
+        </form>
+      </div>
+    </div>
+  </div>
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
