@@ -1,7 +1,10 @@
 const express = require('express');
 const mysql = require('mysql');
+const bodyParser = require('body-parser');
 
 const app = express();
+app.use(bodyParser.json());
+const path = require('path');
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -21,5 +24,7 @@ db.connect(function(err) {
         if (err) throw err;
         console.log("Connecté à la base de données MySQL!");
       });
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;

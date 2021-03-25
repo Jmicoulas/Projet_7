@@ -1,5 +1,4 @@
 function AjoutPost(){
-
 con.query("INSERT INTO ")
 
 }
