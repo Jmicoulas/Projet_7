@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 app.use(bodyParser.json());
+const userRoutes = require('./routes/user');
 const path = require('path');
 
 app.use((req, res, next) => {
@@ -25,6 +26,7 @@ db.connect(function(err) {
         console.log("Connecté à la base de données MySQL!");
       });
 
+app.use('/api/auth', userRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;
