@@ -1,40 +1,110 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const db = require('../mysqlParam');
 
-const User = require('../models/user');
+const User = require("../models/user");
 
 exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10)
-      .then(hash => {
-        const user = new User({
-          email: req.body.email,
-          password: hash,
-          nom : req.body.nom,
-          prenom : req.body.prenom,
-          roles : '2'
-        });
-        db.query('INSERT INTO user SET ?', user, (err, res) => {
-            if(err) throw err;
-            console.log('Last insert ID:', res.insertId);
-        })
-      })
-      .catch(error => res.status(500).json({ error }));
-  };
+  const user = req.body;
+   bcrypt.hash(user.password, 10) 
+  .then(hash => {
+      user.password = hash;
+      db.query(`INSERT INTO user SET ?`, user, (err, res, next) => {
+          if (err) {
+              console.log(err)
+              return res.status(400).json("erreur")
+          }
+          return res.status(201).json({message : 'Votre compte a bien été crée !'});
+      });
+  });
+};  
 
-  exports.login = (req, res, next) => {
-    db.query('SELECT * FROM user WHERE email = ?', email, (err, res) => {
-          bcrypt.compare(req.body.password, user.password)
-            .then(valid => {
-                if(err) throw err;
-              res.status(200).json({
-                userId: user._id,
-                token: jwt.sign(
-                  { userId: user._id },
-                  'rqOg7EwSwWLCnO23nan694ElZhni5oYA',
-                  { expiresIn: '24h' }
-                )
-              });
-            })
-            .catch(error => res.status(500).json({ error }));
+exports.login = (req, res, next) => {
+  if (req.body.email && req.body.password) {
+    console.log(req.body.email);
+    db.query("SELECT * FROM user WHERE email= ?",req.body.email, (err, res, next) => {
+      console.log(res);
+      console.log(res.password);
+      if (res.length > 0) {
+        bcrypt.compare(req.body.password, res.password).then((valid) => {
+          if (!valid) {
+            res.status(401).json({ message: "Utilisateur ou mot de passe inconnu" });
+          } else {
+            console.log(email, "s'est connecté");
+            res.status(200).json({
+              email: res.email,
+              status: status,
+              token: jwt.sign(
+                { userId: res.id, status: status },
+                "rqOg7EwSwWLCnO23nan694ElZhni5oYA",
+                { expiresIn: "24h" }
+              ),
+            });
+          }
+        });
+      } else {
+        res
+          .status(401)
+          .json({ message: "Utilisateur ou mot de passe inconnu" });
+      }
     });
+  } else {
+    res
+      .status(500)
+      .json({ message: "Entrez votre email et votre mot de passe" });
+  }
+};
+
+exports.deleteUser = (req, res, next) => {
+  db.query("DELETE FROM user WHERE email= ?", req.body.email, (error, res) => {
+    if (error) {
+      console.log(error);
+      return res.status(400).json(error);
+    }
+    console.log("Le compte a bien été supprimé !");
+    return res
+      .status(200)
+      .json({ message: "Votre compte a bien été supprimé !" });
+  });
+};
+
+exports.getUsers = (req, res, next) => {
+  db.query(
+    "SELECT * FROM user WHERE email =?", req.body.email, (error, res) => {
+      if (error) {
+        return res.status(400).json(error);
+      }
+      return res.status(200).json(results);
+    }
+  );
+};
+
+exports.updateUser = (req, res, next) => {
+  let password = req.body.password;
+  bcrypt.hash(password, 10).then((hash) => {
+    password = hash;
+    db.query(`UPDATE user password='${password}'  WHERE email=${email}`,
+      (error, res) => {
+        if (error) {
+          return res.status(400).json(error);
+        }
+        return res
+          .status(200)
+          .json({ message: "Votre compte ont bien été modifié !" });
+      }
+    );
+  });
+};
+
+exports.getOneUser = (req, res, next) => {
+  db.query(
+    "SELECT * FROM user WHERE email=?",
+    req.params.email,
+    (error, res) => {
+      if (error) {
+        return res.status(400).json(error);
+      }
+      return res.status(200).json(results);
+    }
+  );
 };
