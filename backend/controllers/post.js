@@ -8,7 +8,7 @@ exports.postPost = (req, res, next) => {
     postingUser: userId,
     linkWebsite: req.body.linkWebsite,
     linkImage: nomFichier + ".gif",
-    textPost: req.body.text,
+    textPost: req.body.text
   };
   db.query("INSERT INTO post SET ?", postParam, (error, res) => {
     if (error) {

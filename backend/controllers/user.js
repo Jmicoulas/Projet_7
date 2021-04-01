@@ -21,10 +21,10 @@ exports.signup = (req, res, next) => {
 
 exports.login = (req, res, next) => {
   if (req.body.email && req.body.password) {
-    console.log(req.body.email);
+    
     db.query("SELECT * FROM user WHERE email= ?",req.body.email, (err, res, next) => {
+      console.log(res.email);
       console.log(res);
-      console.log(res.password);
       if (res.length > 0) {
         bcrypt.compare(req.body.password, res.password).then((valid) => {
           if (!valid) {
