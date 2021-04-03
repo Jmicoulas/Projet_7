@@ -1,10 +1,11 @@
 const express = require('express');
 const mysql = require('mysql');
+const app = express();
 const bodyParser = require('body-parser');
 
-const app = express();
 app.use(bodyParser.json());
-const postRoutes = require('./routes/post')
+app.use(bodyParser.urlencoded({ extended: true }));
+const postRoutes = require('./routes/post');
 const userRoutes = require('./routes/user');
 const path = require('path');
 
