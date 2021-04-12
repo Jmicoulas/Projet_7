@@ -1,13 +1,14 @@
 let user;
 
-signup = () => {
-        let btnSignUp = document.getElementById("btnSignUp");
-        btnSignUp.addEventListener("click", () => {
-          checkInput();
-          userSignup(user);
-        })
-    };
-  
+//Controle Regex
+const checkString = /[a-zA-Z]/;
+const checkNumber = /[0-9]/;
+const checkSpecialCharacter = /[§!@#$%^&*(),.?":{}|<>]/;
+
+function Inscription(){  
+  checkInput();
+  userSignup(user);  
+}  
 
   //Test du nom => aucun chiffre ou charactère spécial permis
 function checkNom() {
@@ -33,15 +34,16 @@ function checkInput() {
   checkNom();
   checkPrenom();
   user = {
-    email : document.getElementById("signUpMail"),
-    password: document.getElementById("signUpPassword"),
+    email : document.getElementById("signUpEmail").value,
+    password: document.getElementById("signUpPassword").value,
     nom: formNom,
     prenom: formPrenom,
     roles : 2
   };
-};
+}
 
 function userSignup(user) {
+  console.log(JSON.stringify(user));
   fetch('http://localhost:8000/api/auth/signup',{
   method: "POST",
   body: JSON.stringify(user),
@@ -50,4 +52,19 @@ function userSignup(user) {
   .then(res => res.json())
   .then(response => console.log('Bingo!', JSON.stringify(response)))
   .catch(error => console.error('Error:', error))
+  }
+
+function userLogin() {
+  let userLogin = {
+    email: document.getElementById("loginEmail").value,
+    password: document.getElementById("loginPassword").value
   };
+  fetch('http://localhost:8000/api/auth/login',{
+  method: "POST",
+  body: JSON.stringify(userLogin),
+  headers: { "Content-type": "application/json" }
+   })
+  .then(res => res.json())
+  .then(response => console.log('Bingo!'))
+  .catch(error => console.error('Error:', error))
+}
