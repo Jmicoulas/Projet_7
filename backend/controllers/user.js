@@ -9,7 +9,7 @@ exports.signup = (req, res, next) => {
     (err, results, next) => {
       let string = JSON.stringify(results);
         let json = JSON.parse(string);
-      if (json[0].ifEmailExist > 0) {
+      if (json[0].ifEmailExist =! 0) {
         console.log("Cette adresse email est déjà utilisé");
         res.status(400).json("Cette adresse email a déjà été utilisé pour créer un compte");
       } else {
@@ -67,7 +67,7 @@ exports.login = (req, res, next) => {
   } else {
     res
       .status(500)
-      .json({ message: "Entrez votre email et votre mot de passe" });
+      .json({ message: "Entrer votre email et votre mot de passe" });
   }
 };
 
