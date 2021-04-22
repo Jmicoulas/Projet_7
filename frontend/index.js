@@ -59,7 +59,7 @@ function userSignup(user) {
     headers: { "Content-type": "application/json" },
   })
     .then((res) => res.json())
-    .then((response) => {console.log("Bingo!", JSON.stringify(response))})
+    .then((response) => console.log("Bingo!", JSON.stringify(response)))
     .catch((error) => console.error("Error:", error));
 }
 
@@ -74,9 +74,8 @@ function userLogin() {
     headers: { "Content-type": "application/json" },
   })
     .then((res) => res.json())
-    .then((json) => {
-      console.log("Bingo!"); 
-      sessionStorage.setItem("token", JSON.stringify(json));
+    .then((response) => {
+      console.log("Bingo!");
       window.location.replace("feed.html");
     })
     .catch((error) => console.error("Error:", error));

@@ -1,30 +1,22 @@
-const db = require("../mysqlParam");
-
-exports.publishPost = (req, res, next) => {
+exports.postPost = (req, res, next) => {
   const date = new Date();
   const currentDate =
     date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
   const userId = req.body.id;
+  const nomFichier = userId + "-" + currentDate;
   const postParam = {
     postingUser: userId,
     linkWebsite: req.body.linkWebsite,
-    textPost: req.body.textpost,
+    linkImage: nomFichier + ".gif",
+    textPost: req.body.text
   };
-console.log(req.body.linkImage);
-if(req.body.linkImage != undefined){
-  postParam ={
-    linkImage:currentDate + req.linkimage,
-  };
-}
-  db.query("INSERT INTO post SET ?", postParam, (error, response) => {
+  db.query("INSERT INTO post SET ?", postParam, (error, res) => {
     if (error) {
       return res.status(400).json({ error });
     }
     return res.status(201).json({ Post: "Votre Post a été publié !" });
   });
 };
-
-
 
 exports.getAllPost = (req, res, next) => {
   db.query("SELECT * FROM Post ORDER BY created_at DESC", (error, res) => {
