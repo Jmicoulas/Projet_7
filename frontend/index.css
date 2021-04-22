@@ -1,7 +1,7 @@
-a {
+footer a {
   color: white;
 }
-a:hover {
+footer a:hover {
   color: #d1515a;
 }
 html {
@@ -46,6 +46,18 @@ body {
 }
 .leftmenutrigger {
   display: none;
+}
+#btnSearch{
+  background-color: #091f43;
+}
+#btnSearch:hover{
+  color: white;
+}
+#btnLogOff{
+  background-color: #091f43;
+}
+#btnLogOff:hover{
+  color: white;
 }
 @media (min-width: 992px) {
   .leftmenutrigger {
@@ -99,4 +111,10 @@ body {
 .dropdown-toggle::after {
   content: none;
   display: none;
+}
+@media (min-width: 768px){
+  #btnLogOff{
+    margin-top: 30em;
+    margin-left: 2em;
+  }
 }

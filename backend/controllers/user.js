@@ -9,7 +9,7 @@ exports.signup = (req, res, next) => {
     (err, results, next) => {
       let string = JSON.stringify(results);
         let json = JSON.parse(string);
-      if (json[0].ifEmailExist =! 0) {
+      if (json[0].ifEmailExist != 0) {
         console.log("Cette adresse email est déjà utilisé");
         res.status(400).json("Cette adresse email a déjà été utilisé pour créer un compte");
       } else {
@@ -47,10 +47,11 @@ exports.login = (req, res, next) => {
                 .json({ message: "Utilisateur ou mot de passe inconnu" });
             } else {
               console.log(json[0].email, "s'est connecté");
-              res.status(200).json({
+              return res.status(200).json({
+                userId: json[0].id,
                 email: res.email,
                 token: jwt.sign(
-                  { userId: json[0].id},
+                  { userId: json[0].id },
                   "rqOg7EwSwWLCnO23nan694ElZhni5oYA",
                   { expiresIn: "24h" }
                 ),
@@ -88,7 +89,7 @@ exports.getUsers = (req, res, next) => {
   db.query(
     "SELECT * FROM user WHERE email =?",
     req.body.email,
-    (error, res) => {
+    (error, results) => {
       if (error) {
         return res.status(400).json(error);
       }

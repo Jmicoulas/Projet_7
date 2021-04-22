@@ -11,73 +11,75 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
-<body>
+<body class="container">
   <div class="row mb-5">
     <nav class="navbar header-top navbar-expand-lg  navbar-dark" id="header">
       <a class="navbar-brand" href="#">
-        <img class="img-fluid" src="./Images/icon-left-font-monochrome-white.png" width="100" height="100" alt="Logo de Groupomania">
+        <img class="img-fluid" src="./Images/icon-left-font-monochrome-white.png" width="100" height="100"
+          alt="Logo de Groupomania">
       </a>
     </nav>
   </div>
   <div class="row">
-  <div class="col-2"></div>
+    <div class="col-2"></div>
     <aside class="col-sm-4">
-  <div class="card">
-  <article class="card-body">
-  <h4 class="card-title mb-4 mt-1">Créer votre compte</h4>
-     <form>
-      <div class="form-group mb-2">
-        <label for="signUpEmail">Votre adresse Email</label>
-        <input type="email" class="form-control" id="signUpEmail" aria-describedby="emailHelp"
-          placeholder="Entrer votre adresse email">
-        <small id="emailHelp" class="form-text text-muted">Votre adresse email vous servira pour vous
-          connecter</small>
-      </div> 
-      <div class="form-group mb-2">
-        <label for="signUpPassword">Votre mot de passe</label>
-        <input type="password" class="form-control" id="signUpPassword" placeholder="**********" aria-describedby="passwordHelpBlock">
-        <small id="passwordHelpBlock" class="form-text text-muted">
-          Votre mot de passe doit comprendre au moins 6 charactères dont une majuscule, un chiffre et un symbole.
-        </small>
+      <div class="card">
+        <article class="card-body">
+          <h4 class="card-title mb-4 mt-1">Créer votre compte</h4>
+          <form>
+            <div class="form-group mb-2">
+              <label for="signUpEmail">Votre adresse Email</label>
+              <input type="email" class="form-control" id="signUpEmail" aria-describedby="emailHelp"
+                placeholder="Entrer votre adresse email">
+              <small id="emailHelp" class="form-text text-muted">Votre adresse email vous servira pour vous
+                connecter</small>
+            </div>
+            <div class="form-group mb-2">
+              <label for="signUpPassword">Votre mot de passe</label>
+              <input type="password" class="form-control" id="signUpPassword" placeholder="**********"
+                aria-describedby="passwordHelpBlock">
+              <small id="passwordHelpBlock" class="form-text text-muted">
+                Votre mot de passe doit comprendre au moins 6 charactères dont une majuscule, un chiffre et un symbole.
+              </small>
+            </div>
+            <div class="form-group mb-2">
+              <label for="signUpPrenom">Votre prénom</label>
+              <input type="text" class="form-control" id="signUpPrenom" placeholder="Prénom">
+            </div>
+            <div class="form-group mb-2">
+              <label for="signUpNom">Votre nom de famille</label>
+              <input type="text" class="form-control" id="signUpNom" placeholder="Nom de famille">
+            </div>
+            <div class="form-group mb-2">
+              <button type="submit" class="btn btn-block" id="btnSignUp" onclick="Inscription()"> Vous inscrire
+              </button>
+            </div>
+          </form>
+        </article>
       </div>
-      <div class="form-group mb-2">
-        <label for="signUpPrenom">Votre prénom</label>
-        <input type="text" class="form-control" id="signUpPrenom" placeholder="Prénom">
-      </div> 
-      <div class="form-group mb-2">
-        <label for="signUpNom">Votre nom de famille</label>
-        <input type="text" class="form-control" id="signUpNom" placeholder="Nom de famille">
+
+    </aside>
+    <aside class="col-sm-4">
+      <div class="card">
+        <article class="card-body ">
+          <h4 class="card-title mb-4 mt-1">Connexion</h4>
+          <form>
+            <div class="form-group mb-2">
+              <label for="loginEmail">Adresse Email</label>
+              <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp"
+                placeholder="Entrer votre adresse email">
+            </div>
+            <div class="form-group mb-2">
+              <label for="loginPassword">Mot de passe</label>
+              <input type="password" class="form-control" id="loginPassword" placeholder="**********">
+              <a class="small" href="#">Mot de passe oublié?</a>
+            </div>
+            <button type="button" class="btn mb-2" id="btnLogin" datatoggle="modal" onclick="userLogin()">Vous connecter</button>
+          </form>
       </div>
-      <div class="form-group mb-2">
-          <button type="submit" class="btn btn-block" id="btnSignUp" onclick="Inscription()"> Vous inscrire </button>
-      </div>                                                            
-  </form>
+  </div>
   </article>
   </div>
-  
-    </aside> 
-    <aside class="col-sm-4">
-  <div class="card">
-  <article class="card-body ">
-    <h4 class="card-title mb-4 mt-1">Connexion</h4>
-    <form>
-      <div class="form-group mb-2">
-        <label for="loginEmail">Adresse Email</label>
-        <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp"
-          placeholder="Entrer votre adresse email">
-      </div>
-      <div class="form-group mb-2">
-        <label for="loginPassword">Mot de passe</label>
-        <input type="password" class="form-control" id="loginPassword" placeholder="**********">
-        <a class="small" href="#">Mot de passe oublié?</a>
-      </div> 
-      <button type="button" class="btn mb-2" id="btnLogin" onclick="userLogin()">Vous connecter</button>
-    </form>
-             
-          </div>                                            
-      </div> <!-- .row// -->                                                                  
-  </article>
-  </div> 
 
   <footer class="text-center font-weight-bold fixed-bottom">
     <div class="container p-3 pt-5">
