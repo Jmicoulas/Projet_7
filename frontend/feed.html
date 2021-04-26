@@ -16,7 +16,7 @@
     <nav class="navbar header-top fixed-top navbar-expand-lg  navbar-dark" id="header">
       <span class="navbar-toggler-icon leftmenutrigger"></span>
       <a class="navbar-brand" href="#">
-        <img src="./Images/icon-left-font-monochrome-white.png" width="100" height="100" alt="Logo de Groupomania">
+        <img src="./Images/icon-left-font-monochrome-white.png" width="100" alt="Logo de Groupomania">
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
         aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,22 +60,20 @@
         <div class="card-body">
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
-              <form class="formgroup" action="/upload" method="POST" enctype="multipart/form-data">
                 <label class="sr-only" for="message">Publication</label>
                 <textarea class="form-control" id="message" rows="3" placeholder="Que voulez-vous partagez?"
                   aria-describedby="addImage"></textarea>
                 <small id="addImage" class="form-text text-muted">
-                    <div class="form-group">
-                      <input type="file" name="file" id="input-files" class="form-control-file border" />
+                    <div>
+                      <input type="file" name="fileInput" id="fileInput" class="form-control-file border" />
                     </div>
-                    <button type="submit" class="btn btn-primary">Publier</button>
+                    <button type="button" class="btn" onclick="publishPost()">Publier</button>
                     <div class="row">
                       <div class="col-sm-12">
                         <div class="preview-images"></div>
                       </div>
                     </div>
                 </small>
-              </form>
             </div>
           </div>
         </div>
