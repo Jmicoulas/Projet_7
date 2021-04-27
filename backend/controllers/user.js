@@ -49,8 +49,10 @@ exports.login = (req, res, next) => {
               console.log(json[0].email, "s'est connecté");
               return res.status(200).json({
                 userId: json[0].id,
-                email: res.email,
-                token: jwt.sign(
+                email: json[0].email,
+                userNom:json[0].nom,
+                userPrenom:json[0].prenom,
+                token: jwt.sign(                  
                   { userId: json[0].id },
                   "rqOg7EwSwWLCnO23nan694ElZhni5oYA",
                   { expiresIn: "24h" }

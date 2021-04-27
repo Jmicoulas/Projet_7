@@ -76,6 +76,7 @@ function userLogin() {
     .then((res) => res.json())
     .then((json) => {
       console.log("Bingo!"); 
+      console.log(json);
       sessionStorage.setItem("token", JSON.stringify(json));
       window.location.replace("feed.html");
     })

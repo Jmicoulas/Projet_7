@@ -2,13 +2,11 @@ const db = require("../mysqlParam");
 
 exports.publishPost = (req, res, next) => {
 // console.log("fichier "+req.file.filename);
-  const date = new Date();
-  const currentDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
   const userId = req.body.userId;
   let postParam = {
     postingUser: userId,
     textPost: req.body.text,
-    linkImage:currentDate + `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+    linkImage:`${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
   };
   db.query("INSERT INTO post SET ?", postParam, (error, response) => {
     if (error) {
@@ -25,13 +23,11 @@ exports.getAllPost = (req, res, next) => {
     if (error) {
       return res.status(400).json({ error });
     }
-    return res.status(200).json({
-      postId:json[0].id,
-      userId: json[0].postingUser,
-      image: json[0].linkImage,
-      text: json[0].textPost,
-      date: json[0].postingDate
-    });
+    if(json[0]!= null){
+      return res.status(200).json(json);
+    }else{
+      return res.status(200).json({message : "Aucun post disponible"});
+    }
   });
 };
 
