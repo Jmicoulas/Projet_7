@@ -42,7 +42,8 @@ exports.getOnePost = (req, res, next) => {
 };
 
 exports.deletePost = (req, res, next) => {
-  db.query("DELETE FROM Post WHERE id= ?", req.body.id, (error, response) => {
+  console.log(req.body);
+  db.query("DELETE FROM Post WHERE id= ?",req.params.id , (error, response) => {
       if (error) {
         return res.status(400).json(error);
       }
