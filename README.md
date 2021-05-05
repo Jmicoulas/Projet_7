@@ -3,7 +3,7 @@
 
 💻 # groupomania Création réseau social
 
-Les fonctionnalités importantes :
+Les fonctionnalités :
 
 mis en ligne d'un gif + un message
 Supprimer le message
@@ -19,7 +19,6 @@ Ensuite rendez-vous dans le dossier Groupomania à l'aide du terminal ou de l'in
 cd Groupomania
 
 #########################################
-
 ➡️ Backend:
 
 dans le terminal (ou l'invite de commande ) lancer la commande : cd backend
@@ -34,27 +33,14 @@ une fois toute ces étapes réalisés lancer la commande :
 Le serveur backend est à present fonctionnel
 
 #########################################
-
 ✔️ Frontend:
 
-se rendre dans le dossier frontend : cd frontend
+se rendre dans le dossier frontend 
 
-et lancer la commande suivante :
+et ouvrir index.html
 
-npm install
-une fois l'installation terminé lancer la commande :
+#########################################
+Le compte admin :
 
-npm run serve
-##########################
-
-Pour créer un compte admin :
-
-Créer un compte normal en vous inscrivant sur l'application
-
-ensuite dans la base de données sql taper la commande sql suivante :
-
-UPDATE user SET isAdmin = ‘1’ WHERE id = ‘(l’id du compte à transformer en admin)’;
-
-Par défaut le serveur client est accessible en local via le port 8080: http://localhost:8080/
-
-Bonne navigation !
+email : admin@admin.fr
+mot de passe : Admin123*
