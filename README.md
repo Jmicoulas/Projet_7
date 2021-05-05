@@ -28,6 +28,7 @@ Puis lancer la commande suivante :
 1)npm install
 
 2)npm install -g nodemon
+
 une fois toute ces étapes réalisés lancer la commande :
 
 3)nodemon server
