@@ -15,6 +15,7 @@ Les fonctionnalités :
 
 - Un compte admin pour gérer les utilisateurs
 
+Pour lancer le site sur votre machine : 
 
 Cloner le repository 
 
