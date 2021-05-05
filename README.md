@@ -6,9 +6,13 @@
 Les fonctionnalités :
 
 mis en ligne d'un gif + un message
+
 Supprimer le message
+
 modifier / supprimer un compte
+
 identifier / créer un compte
+
 Un compte admin pour gérer les utilisateurs
 
 
