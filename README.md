@@ -31,6 +31,7 @@ Puis lancer la commande suivante :
 une fois toute ces étapes réalisés lancer la commande :
 
 3)nodemon server
+
 Le serveur backend est à present fonctionnel
 
 #########################################
