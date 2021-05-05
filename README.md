@@ -25,7 +25,8 @@ dans le terminal (ou l'invite de commande ) lancer la commande : cd backend
 
 Puis lancer la commande suivante :
 
-1)npm install 
+1)npm install
+
 2)npm install -g nodemon
 une fois toute ces étapes réalisés lancer la commande :
 
