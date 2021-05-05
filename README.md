@@ -5,15 +5,15 @@
 
 Les fonctionnalités :
 
-mis en ligne d'un gif + un message
+- Mise en ligne d'un gif + un message
 
-Supprimer le message
+- Supprimer le message
 
-modifier / supprimer un compte
+- Modifier / supprimer un compte
 
-identifier / créer un compte
+- Identifier / créer un compte
 
-Un compte admin pour gérer les utilisateurs
+- Un compte admin pour gérer les utilisateurs
 
 
 Cloner le repository 
