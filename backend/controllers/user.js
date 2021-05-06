@@ -52,6 +52,7 @@ exports.login = (req, res, next) => {
                 email: json[0].email,
                 userNom:json[0].nom,
                 userPrenom:json[0].prenom,
+                roles: json[0].roles,
                 token: jwt.sign(                  
                   { userId: json[0].id },
                   "rqOg7EwSwWLCnO23nan694ElZhni5oYA",
@@ -76,7 +77,7 @@ exports.login = (req, res, next) => {
 
 exports.deleteUser = (req, res, next) => {
   console.log(req.body);
-  db.query("DELETE FROM user WHERE email= ?", req.body.idUser, (error, res) => {
+  db.query("DELETE FROM user WHERE email= ?", req.body.email, (error, res) => {
     if (error) {
       console.log(error);
       return res.status(400).json(error);
@@ -90,9 +91,10 @@ exports.deleteUser = (req, res, next) => {
 
 exports.getUsers = (req, res, next) => {
   db.query(
-    "SELECT * FROM user WHERE email =?",
-    req.body.email,
+    "SELECT * FROM user WHERE roles = 2",
     (error, results) => {
+      let string = JSON.stringify(results);
+      let json = JSON.parse(string);
       if (error) {
         return res.status(400).json(error);
       }
@@ -102,7 +104,6 @@ exports.getUsers = (req, res, next) => {
 };
 
 exports.updateUser = (req, res, next) => {
-  console.log("updateUser req.body = " +req.body);
   let password = req.body.password;
   let email = req.body.email;
   bcrypt.hash(password, 10).then((hash) => {

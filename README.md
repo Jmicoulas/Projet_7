@@ -9,9 +9,9 @@ Les fonctionnalités :
 
 - Supprimer le message
 
-- Modifier / supprimer un compte
+- Créer un compte & s'identifier
 
-- Identifier / créer un compte
+- Modifier le mot de passe / supprimer un compte
 
 - Un compte admin pour gérer les utilisateurs
 
@@ -51,4 +51,4 @@ et ouvrir index.html
 Le compte admin :
 
 email : admin@admin.fr
-mot de passe : Admin123*
+mot de passe : Admin123* (Ce mot de passe est à modifier)

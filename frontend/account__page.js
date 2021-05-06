@@ -3,6 +3,9 @@ const user = sessionStorage.getItem("token")
   : [];
 let userId = user.userId;
 
+if (user.roles == 1) {
+  administrating();
+} else {
 fetch("http://localhost:8000/api/getOnePost", {
   method: "POST",
   headers: {
@@ -23,17 +26,61 @@ fetch("http://localhost:8000/api/getOnePost", {
   })
   .then((posts) => {
     console.log(posts);
-    if (resultrqt) {
-      for (var i = 0; i < posts.length; i++) {
-        let itemHtml = displayPost(posts[i]);
-        main.innerHTML += itemHtml;
-        let postId = posts[0].id;
-        deletePost(postId);
-        modifyPassword(user);
+      if (resultrqt) {
+        for (var i = 0; i < posts.length; i++) {
+          let itemHtml = displayPost(posts[i]);
+          main.innerHTML += itemHtml;
+          let postId = posts[0].id;
+          deletePost(postId);
+          modifyPassword(user);
+        }
       }
-    }
   })
   .catch((error) => console.error("Error:", error));
+}
+
+function administrating() {
+  fetch("http://localhost:8000/api/auth/getAllUsers")
+    .then((res) => res.json())
+    .then((response) => {
+      console.log("Bingo!", response); 
+      let i = 1;
+      response.forEach(element => {
+        main.innerHTML +=` 
+    <div class="col-5 mx-auto card text-center">
+        <div class="card-header">
+            Compte n°${i++}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">${element.prenom} ${element.nom}</h5>
+            <p class="card-text">${element.email}</p>
+            <button type="button" id="confirAccount${element.email}" class="btn mt-2" data-toggle="modal" data-target="#SupprAccount">Supprimer ce compte <i class="fas fa-user-times"></i></button>
+        </div>
+    </div>` ;
+      });
+      let deletedUser = response.email;
+      Admindelete(deletedUser);
+    })
+    .catch((error) => console.error("Error:", error));
+}
+
+function Admindelete(deletedUser){
+  let inputDelete = document.getElementById("accountBtn");
+  inputDelete.addEventListener("click", () => {
+    fetch("http://localhost:8000/api/auth/deleteUser", {
+      method: "POST",
+      body: JSON.stringify({email : deletedUser}),
+      headers: { "Content-type": "application/json",
+                  Authorization: `token ${user.token}` 
+                },
+    })
+      .then((res) => res.json())
+      .then((response) => {
+
+      })
+      .catch((error) => console.error("Error:", error));
+  });
+}
 
 function logOff() {
   sessionStorage.clear();
@@ -49,7 +96,7 @@ function deletePost(postId) {
         Authorization: `token ${user.token}`,
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ "idpost": postId }),
+      body: JSON.stringify({ idpost: postId }),
     })
       .then((res) => res.json())
       .then((response) => {
@@ -61,41 +108,41 @@ function deletePost(postId) {
 }
 
 function deleteAccount() {
-    let inputDelete = document.getElementById("accountBtn");
+  let inputDelete = document.getElementById("accountBtn");
   inputDelete.addEventListener("click", () => {
-  fetch("http://localhost:8000/api/auth/deleteUser", {
-    method: "POST",
-    headers: {
-      Authorization: `token ${user.token}`,
-      "Content-type": "application/json",
-    },
-    body: JSON.stringify({ "idUser": userId }),
-  })
-    .then((res) =>res.json())
-    .then((response) => {
-       window.location.replace("index.html")
+    fetch("http://localhost:8000/api/auth/deleteUser", {
+      method: "POST",
+      headers: {
+        Authorization: `token ${user.token}`,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ idUser: userId }),
     })
-    .catch((error) => console.error("Error:", error));
-    })
+      .then((res) => res.json())
+      .then((response) => {
+        window.location.replace("index.html");
+      })
+      .catch((error) => console.error("Error:", error));
+  });
 }
 
 function modifyPassword() {
-let inputDelete = document.getElementById("passwordBtn");
-inputDelete.addEventListener("click", () => {
-let form = new FormData();
-form.append("password", document.getElementById("modifiedPassword").value);
-form.append("email", user.email);
-fetch("http://localhost:8000/api/auth/updateUser", {
-  method: "POST",
-  headers: {Authorization: `token ${user.token}`},
-  body: form,
-})
-.then((res) => res.json())
-        .then((response) => {
-            console.log("Bingo!", JSON.stringify(response));
-        })
-        .catch((error) => console.error("Error:", error));
-})
+  let inputDelete = document.getElementById("passwordBtn");
+  inputDelete.addEventListener("click", () => {
+    let form = new FormData();
+    form.append("password", document.getElementById("modifiedPassword").value);
+    form.append("email", user.email);
+    fetch("http://localhost:8000/api/auth/updateUser", {
+      method: "POST",
+      headers: { Authorization: `token ${user.token}` },
+      body: form,
+    })
+      .then((res) => res.json())
+      .then((response) => {
+        console.log("Bingo!", JSON.stringify(response));
+      })
+      .catch((error) => console.error("Error:", error));
+  });
 }
 
 function displayPost(post) {
