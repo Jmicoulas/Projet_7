@@ -77,7 +77,7 @@ exports.login = (req, res, next) => {
 
 exports.deleteUser = (req, res, next) => {
   console.log(req.body);
-  db.query("DELETE FROM user WHERE email= ?", req.body.email, (error, res) => {
+  db.query("DELETE FROM user WHERE id= ?", req.body.id, (error, res) => {
     if (error) {
       console.log(error);
       return res.status(400).json(error);

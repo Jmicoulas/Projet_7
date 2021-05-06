@@ -2,6 +2,7 @@ const user = sessionStorage.getItem("token")
   ? JSON.parse(sessionStorage.getItem("token"))
   : [];
 let userId = user.userId;
+let deletedUser;
 
 if (user.roles == 1) {
   administrating();
@@ -43,7 +44,7 @@ function administrating() {
   fetch("http://localhost:8000/api/auth/getAllUsers")
     .then((res) => res.json())
     .then((response) => {
-      console.log("Bingo!", response); 
+      console.log("Bingo!", response);
       let i = 1;
       response.forEach(element => {
         main.innerHTML +=` 
@@ -58,21 +59,23 @@ function administrating() {
         </div>
     </div>` ;
       });
-      let deletedUser = response.email;
-      Admindelete(deletedUser);
+      adminDelete();
     })
     .catch((error) => console.error("Error:", error));
 }
 
-function Admindelete(deletedUser){
+function adminDelete(){
   let inputDelete = document.getElementById("accountBtn");
-  inputDelete.addEventListener("click", () => {
+  inputDelete.addEventListener("click", () => { 
     fetch("http://localhost:8000/api/auth/deleteUser", {
-      method: "POST",
-      body: JSON.stringify({email : deletedUser}),
-      headers: { "Content-type": "application/json",
-                  Authorization: `token ${user.token}` 
-                },
+      // method: "POST",
+      // headers: { "Content-type": "application/json",
+      //             Authorization: `token ${user.token}` 
+      //           },
+      // body: JSON.stringify({"email" : deletedUser}),
+    method: 'post',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ "deletedUser": deletedUser }),
     })
       .then((res) => res.json())
       .then((response) => {
