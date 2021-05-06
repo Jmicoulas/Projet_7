@@ -42,9 +42,9 @@ exports.login = (req, res, next) => {
         if (results.length > 0) {
           bcrypt.compare(req.body.password, json[0].password).then((valid) => {
             if (!valid) {
-              res
+              return res
                 .status(401)
-                .json({ message: "Utilisateur ou mot de passe inconnu" });
+                .json({ erreur: "Utilisateur ou mot de passe inconnu" });
             } else {
               console.log(json[0].email, "s'est connecté");
               return res.status(200).json({
@@ -61,9 +61,9 @@ exports.login = (req, res, next) => {
             }
           });
         } else {
-          res
+          return res
             .status(401)
-            .json({ message: "Utilisateur ou mot de passe inconnu" });
+            .json({ erreur: "Utilisateur ou mot de passe inconnu" });
         }
       }
     );
@@ -75,7 +75,8 @@ exports.login = (req, res, next) => {
 };
 
 exports.deleteUser = (req, res, next) => {
-  db.query("DELETE FROM user WHERE email= ?", req.body.email, (error, res) => {
+  console.log(req.body);
+  db.query("DELETE FROM user WHERE email= ?", req.body.idUser, (error, res) => {
     if (error) {
       console.log(error);
       return res.status(400).json(error);
@@ -101,7 +102,9 @@ exports.getUsers = (req, res, next) => {
 };
 
 exports.updateUser = (req, res, next) => {
+  console.log("updateUser req.body = " +req.body);
   let password = req.body.password;
+  let email = req.body.email;
   bcrypt.hash(password, 10).then((hash) => {
     password = hash;
     db.query(

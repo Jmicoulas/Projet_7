@@ -10,6 +10,6 @@ router.post('/login', userCtrl.login);
 router.get('/getAllUsers', userCtrl.getUsers);
 router.get('/getOneUser/:id', userCtrl.getOneUser)
 router.post('/deleteUser', auth, userCtrl.deleteUser);
-router.post('/updateUser/:id', auth, userCtrl.updateUser);
+router.post('/updateUser', auth, regexEmail,userCtrl.updateUser);
 
 module.exports = router;

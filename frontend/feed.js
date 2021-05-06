@@ -1,19 +1,27 @@
-const user = sessionStorage.getItem("token") ?
-    JSON.parse(sessionStorage.getItem("token")) : [];
+const user = sessionStorage.getItem("token") ? JSON.parse(sessionStorage.getItem("token")) : [];
+
+let main = document.getElementById("main");
 
 fetch("http://localhost:8000/api/getAllPosts/")
-    .then((response) => {
-        return response.json();
+    .then((res) => {
+      if(res.status == 404){
+            main.innerHTML += '<p class="text-center">Aucun post créer pour le moment, soyez le premier à partager!</p>'
+            resultrqt = false;
+          }else{
+            resultrqt = true;
+          }
+        return res.json();
     })
     .then((posts) => {
         console.log(posts);
-        let main = document.getElementById("main");
-        for (var i = 0; i < posts.length; i++) {
+        if(resultrqt){        
+          for (var i = 0; i < posts.length; i++) {
             let itemHtml = displayAllPost(posts[i]);
             main.innerHTML += itemHtml;
         let postId = posts[0].id;
         deletePost(postId);
-        }   
+            }
+        }
     })
     .catch((error) => console.error("Error:", error));
 
@@ -38,17 +46,19 @@ function publishPost() {
 function deletePost(postId){
   let inputDelete = document.getElementById("deleteBtn");
   inputDelete.addEventListener("click", () => {
-  console.log(postId)
+  console.log("deletePost"+postId)
       fetch("http://localhost:8000/api/deletePost", {
-              method: "POST",
+              method: "DELETE",
               headers: {
-                Authorization: `token ${user.token}`
+                Authorization: `token ${user.token}`,
+                "Content-type": "application/json"
               },
-              body: postId,
+              body: JSON.stringify({"idpost": postId})
           })
           .then((res) => res.json())
           .then((response) => {
               console.log("Bingo!", JSON.stringify(response));
+              document.location.reload();
           })
           .catch((error) => console.error("Error:", error));
   });
@@ -66,20 +76,16 @@ function displayAllPost(post) {
         <div class="card gedf-card">
         <img src="${
           post.linkImage
-        }" class="card-img-top w-25 mx-auto" alt="Image joins au post de ${
-    user.userNom
-  } ${user.userPrenom}">
+        }" class="card-img-top w-25 mx-auto" alt="Image joint au post de ">
           <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
               <div class="d-flex justify-content-between align-items-center">
                 <div class="ml-2">
-                  <div class="h5 m-0" id="postingUserName">${user.userPrenom} ${
-    user.userNom
-  }</div>
+                  <div class="h5 m-0" id="postingUserName">${post.prenom} ${post.nom}</div>
                   <div class="h7 text-muted" id="postingUserPosition"></div>
                 </div>
               </div>
-                <button type="button" id="modifier" class="btn mt-2"><i class="fas fa-edit"></i></button>
+              <!--<button type="button" id="modifier" class="btn mt-2"><i class="fas fa-edit"></i></button>-->
                 <button type="button" id="confirmation" class="btn mt-2" data-toggle="modal" data-target="#confirmationSuppr"><i class="fas fa-backspace"></i></button>
             </div>
           </div>

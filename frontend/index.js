@@ -68,17 +68,30 @@ function userLogin() {
     email: document.getElementById("loginEmail").value,
     password: document.getElementById("loginPassword").value,
   };
+  var resultrqt = false;
   fetch("http://localhost:8000/api/auth/login", {
     method: "POST",
     body: JSON.stringify(userLogin),
     headers: { "Content-type": "application/json" },
   })
-    .then((res) => res.json())
-    .then((json) => {
-      console.log("Bingo!"); 
-      console.log(json);
-      sessionStorage.setItem("token", JSON.stringify(json));
-      window.location.replace("feed.html");
+    .then((res) =>{
+      if(res.status == 401){
+        // affichage erreur login retour user
+        alert("Email ou mot de passe incorrect");
+        resultrqt = false;
+        }else if(res.status == 500){
+          // serveur injoignable
+          alert("Erreur de connexion au serveur, veuillez recommencer plus tard!")
+          resultrqt = false;
+        }else{
+          resultrqt = true;
+        }
+      return res.json()})
+    .then((json) => {   
+      if(resultrqt){
+        sessionStorage.setItem("token", JSON.stringify(json));
+        window.location.replace("feed.html");
+      }
     })
     .catch((error) => console.error("Error:", error));
 }

@@ -1,7 +1,7 @@
 const db = require("../mysqlParam");
 
 exports.publishPost = (req, res, next) => {
-// console.log("fichier "+req.file.filename);
+  console.log(req.body);
   const userId = req.body.userId;
   let postParam = {
     postingUser: userId,
@@ -17,7 +17,7 @@ exports.publishPost = (req, res, next) => {
 };
 
 exports.getAllPost = (req, res, next) => {
-  db.query("SELECT * FROM Post ORDER BY postingDate DESC", (error, response) => {
+  db.query("SELECT User.prenom, User.nom, post.textPost, post.postingDate, post.linkImage, post.id FROM Post INNER JOIN User ON Post.postingUser = User.id ORDER BY post.postingDate DESC", (error, response) => {
     let string = JSON.stringify(response);
         let json = JSON.parse(string);
     if (error) {
@@ -26,24 +26,28 @@ exports.getAllPost = (req, res, next) => {
     if(json[0]!= null){
       return res.status(200).json(json);
     }else{
-      return res.status(200).json({message : "Aucun post disponible"});
+      return res.status(404).json({message : "Aucun post disponible"});
     }
   });
 };
 
 exports.getOnePost = (req, res, next) => {
-  db.query("SELECT * FROM Post WHERE id= ?", req.params.id, (error, response) => {
-      if (error) {
-        return res.status(400).json({ error });
-      }
-      return res.status(200).json();
+  db.query("SELECT User.prenom, User.nom, User.email, User.roles, post.textPost, post.postingDate, post.linkImage, post.id FROM Post INNER JOIN User ON Post.postingUser = User.id WHERE Post.postingUser = ? ORDER BY post.postingDate DESC", req.body.idUser, (error, response) => {
+    let string = JSON.stringify(response);
+        let json = JSON.parse(string);
+    if (error) {
+      return res.status(400).json({ error });
     }
-  );
+    if(json[0]!= null){
+      return res.status(200).json(json);
+    }else{
+      return res.status(404).json({message : "Aucun post disponible"});
+    }
+  });
 };
 
 exports.deletePost = (req, res, next) => {
-  console.log(req.body);
-  db.query("DELETE FROM Post WHERE id= ?",req.params.id , (error, response) => {
+  db.query("DELETE FROM Post WHERE id= ?",req.body.idpost , (error, response) => {
       if (error) {
         return res.status(400).json(error);
       }
