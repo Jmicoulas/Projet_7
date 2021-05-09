@@ -1,9 +1,15 @@
 const user = sessionStorage.getItem("token")
   ? JSON.parse(sessionStorage.getItem("token"))
   : [];
+if (user == ""){
+  window.location.replace("index.html");
+}
 let userId = user.userId;
 let deletedUser;
+let newPassword;
 
+
+main.innerHTML += displayUser(user);
 if (user.roles == 1) {
   administrating();
 } else {
@@ -18,7 +24,7 @@ fetch("http://localhost:8000/api/getOnePost", {
   .then((res) => {
     if (res.status == 404) {
       main.innerHTML +=
-        '<p class="text-center">Aucun post créer pour le moment sur ce compte!</p>';
+        '<p class="text-center">Aucune publication créée sur ce compte pour le moment!</p>';
       resultrqt = false;
     } else {
       resultrqt = true;
@@ -30,12 +36,13 @@ fetch("http://localhost:8000/api/getOnePost", {
       if (resultrqt) {
         for (var i = 0; i < posts.length; i++) {
           let itemHtml = displayPost(posts[i]);
-          main.innerHTML += itemHtml;
+          main.innerHTML += itemHtml; 
+        }
+      }if (posts[0] =! null){
           let postId = posts[0].id;
           deletePost(postId);
-          modifyPassword(user);
+          deleteAccount(userId);
         }
-      }
   })
   .catch((error) => console.error("Error:", error));
 }
@@ -110,11 +117,11 @@ function deletePost(postId) {
   });
 }
 
-function deleteAccount() {
+function deleteAccount(userId) {
   let inputDelete = document.getElementById("accountBtn");
   inputDelete.addEventListener("click", () => {
     fetch("http://localhost:8000/api/auth/deleteUser", {
-      method: "POST",
+      method: "DELETE",
       headers: {
         Authorization: `token ${user.token}`,
         "Content-type": "application/json",
@@ -123,44 +130,32 @@ function deleteAccount() {
     })
       .then((res) => res.json())
       .then((response) => {
+        sessionStorage.clear();
         window.location.replace("index.html");
       })
       .catch((error) => console.error("Error:", error));
   });
 }
 
-function modifyPassword() {
-  let inputDelete = document.getElementById("passwordBtn");
-  inputDelete.addEventListener("click", () => {
-    let form = new FormData();
-    form.append("password", document.getElementById("modifiedPassword").value);
-    form.append("email", user.email);
-    fetch("http://localhost:8000/api/auth/updateUser", {
-      method: "POST",
-      headers: { Authorization: `token ${user.token}` },
-      body: form,
-    })
-      .then((res) => res.json())
-      .then((response) => {
-        console.log("Bingo!", JSON.stringify(response));
-      })
-      .catch((error) => console.error("Error:", error));
-  });
+function displayUser(user){
+  let userModel =`
+  <div class="col-5 mx-auto card text-center">
+      <div class="card-header">
+          Détails de votre compte
+      </div>
+      <div class="card-body">
+          <h5 class="card-title">${user.userPrenom} ${user.userNom}</h5>
+          <p class="card-text">Adresse email : ${user.email}</p>
+          <a type="button" href="password__change.html" id="modifPassword" class="btn mt-2">Modifier votre mot de passe <i class="fas fa-user-edit"></i></a>
+          <button type="button" id="confirAccount" class="btn mt-2" data-toggle="modal" data-target="#SupprAccount">Supprimer votre compte <i class="fas fa-user-times"></i></button>
+      </div>
+  </div>`
+
+  return userModel;
 }
 
 function displayPost(post) {
   let postModel = `
-    <div class="col-5 mx-auto card text-center">
-        <div class="card-header">
-            Détails de votre compte
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">${post.prenom} ${post.nom}</h5>
-            <p class="card-text">${post.email}</p>
-            <button type="button" id="modifPassword" class="btn mt-2" data-toggle="modal" data-target="#modifyPassword">Modifier votre mot de passe <i class="fas fa-user-edit"></i></button>
-            <button type="button" id="confirAccount" class="btn mt-2" data-toggle="modal" data-target="#SupprAccount">Supprimer votre compte <i class="fas fa-user-times"></i></button>
-        </div>
-    </div>
     <p class="text-center">Historique de vos publications</p>
     <div class="row justify-content-md-center m-1">
       <div class="col-5">
@@ -196,8 +191,8 @@ function displayPost(post) {
         </div>
       </div>
     </div>`;
-
-  return postModel;
+    
+    return postModel;
 }
 
 //bootstrap sidemenu

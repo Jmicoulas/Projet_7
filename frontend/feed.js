@@ -1,6 +1,8 @@
 const user = sessionStorage.getItem("token") ? JSON.parse(sessionStorage.getItem("token")) : [];
-
 let main = document.getElementById("main");
+if (user == ""){
+  window.location.replace("index.html");
+}
 
 fetch("http://localhost:8000/api/getAllPosts/")
     .then((res) => {
@@ -24,7 +26,7 @@ fetch("http://localhost:8000/api/getAllPosts/")
         }
     })
     .catch((error) => console.error("Error:", error));
-
+    
 function publishPost() {
     const formData = new FormData();
     formData.append("file", document.getElementById("fileInput").files[0]);

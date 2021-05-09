@@ -1,4 +1,6 @@
 let user;
+let checkMessage = "";
+let loginUser;
 
 //Controle Regex
 const checkString = /[a-zA-Z]/;
@@ -7,7 +9,12 @@ const checkSpecialCharacter = /[§!@#$%^&*(),.?":{}|<>]/;
 
 function Inscription() {
   checkInput();
+  if (checkMessage != "") {
+    alert("Attention :" + "\n" + checkMessage);
+    checkMessage = "";
+  }else{
   userSignup(user);
+  }
 }
 
 //Test du nom => aucun chiffre ou charactère spécial permis
@@ -18,10 +25,10 @@ function checkNom() {
     checkSpecialCharacter.test(formNom) == true
   ) {
     checkMessage +=
-      "\n" + "Nom de famille invalide, vérifier votre nom de famille";
+      "\n" + "Le champ Nom de familles contient des caractères invalides, vérifier votre nom de famille";
   } else if (formNom == "") {
     checkMessage +=
-      "\n" + "Renseigner votre nom de famille afin de valider la commande";
+      "\n" + "- Veuillez renseigner votre nom de famille afin de créer votre compte";
   }
 }
 
@@ -32,46 +39,94 @@ function checkPrenom() {
     checkNumber.test(formPrenom) == true ||
     checkSpecialCharacter.test(formPrenom) == true
   ) {
-    checkMessage += "\n" + "Prénom invalide, vérifier votre prénom";
+    checkMessage += "\n" + "Le champ Prénom contient des caractères invalides, vérifier votre prénom";
   } else if (formPrenom == "") {
     checkMessage +=
-      "\n" + "Renseigner votre prénom afin de valider la commande";
+      "\n" + "- Veuillez renseigner votre prénom afin de créer votre compte";
   }
 }
 
 function checkInput() {
   checkNom();
   checkPrenom();
+  let email = document.getElementById("signUpEmail").value;
+  if (email == "" ){
+    checkMessage +=
+    "\n" + "- Veuillez renseigner une adresse email afin de créer votre compte";
+  }
+  let password = document.getElementById("signUpPassword").value;
+  if (password == "" ){
+    checkMessage +=
+    "\n" + "- Veuillez renseigner un mot de passe contenant au moins 6 charactères dont une majuscule, un chiffre et un symbole afin de créer votre compte";
+  }else {
   user = {
-    email: document.getElementById("signUpEmail").value,
-    password: document.getElementById("signUpPassword").value,
+    email: email,
+    password: password ,
     nom: formNom,
     prenom: formPrenom,
     roles: 2,
   };
+ }
 }
 
 function userSignup(user) {
-  console.log(JSON.stringify(user));
   fetch("http://localhost:8000/api/auth/signup", {
     method: "POST",
     body: JSON.stringify(user),
     headers: { "Content-type": "application/json" },
   })
-    .then((res) => res.json())
-    .then((response) => {console.log("Bingo!", JSON.stringify(response))})
-    .catch((error) => console.error("Error:", error));
+    .then((res) => {
+      if (res.status == 400){
+        alert("Cette adresse email a déjà un compte créer avec celle-ci");
+        resultrqt = false;
+        }else{ 
+          resultrqt = true;
+        }
+        res.json();
+    })
+    .then((response) => {
+     if(resultrqt) {
+        alert("Votre compte a bien été créer avec l'adresse mail suivante : " + user.email + ".\nVous pouvez désormais vous connecter avec celle-ci.");
+      }
+    })
+    .catch((error) => {
+      alert("Error:", error);
+    });
 }
 
-function userLogin() {
-  let userLogin = {
-    email: document.getElementById("loginEmail").value,
-    password: document.getElementById("loginPassword").value,
-  };
+function Connexion() {
+  checkLogin();
+  if (checkMessage != "") {
+    alert("Attention :" + "\n" + checkMessage);
+    checkMessage = "";
+  }else{
+  userLogin(loginUser);
+  }
+}
+
+function checkLogin(){
+  let email = document.getElementById("loginEmail").value;
+  if (email == "" ){
+    checkMessage +=
+    "\n" + "- Veuillez renseigner votre adresse email afin de vous connecter";
+  }
+  let password = document.getElementById("loginPassword").value;
+  if (password == "" ){
+    checkMessage +=
+    "\n" + "- Veuillez renseigner votre mot de passe afin de vous connecter";
+  }else {
+    loginUser = {
+    email: email,
+    password: password,
+    };
+  }
+}
+
+function userLogin(loginUser) {
   var resultrqt = false;
   fetch("http://localhost:8000/api/auth/login", {
     method: "POST",
-    body: JSON.stringify(userLogin),
+    body: JSON.stringify(loginUser),
     headers: { "Content-type": "application/json" },
   })
     .then((res) =>{
@@ -81,7 +136,7 @@ function userLogin() {
         resultrqt = false;
         }else if(res.status == 500){
           // serveur injoignable
-          alert("Erreur de connexion au serveur, veuillez recommencer plus tard!")
+          alert("Erreur de connexion au serveur, veuillez reessayer plus tard!")
           resultrqt = false;
         }else{
           resultrqt = true;

@@ -9,7 +9,7 @@ router.post('/signup', regexEmail, userCtrl.signup);
 router.post('/login', userCtrl.login);
 router.get('/getAllUsers', userCtrl.getUsers);
 router.get('/getOneUser/:id', userCtrl.getOneUser)
-router.post('/deleteUser', auth, userCtrl.deleteUser);
-router.post('/updateUser', auth, regexEmail,userCtrl.updateUser);
+router.delete('/deleteUser', auth, userCtrl.deleteUser);
+router.post('/updateUser', auth, regexEmail, userCtrl.updateUser);
 
 module.exports = router;

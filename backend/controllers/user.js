@@ -11,7 +11,7 @@ exports.signup = (req, res, next) => {
         let json = JSON.parse(string);
       if (json[0].ifEmailExist != 0) {
         console.log("Cette adresse email est déjà utilisé");
-        res.status(400).json("Cette adresse email a déjà été utilisé pour créer un compte");
+        return res.status(400).json("Cette adresse email a déjà été utilisé pour créer un compte");
       } else {
         bcrypt.hash(user.password, 10).then((hash) => {
           user.password = hash;
@@ -76,8 +76,8 @@ exports.login = (req, res, next) => {
 };
 
 exports.deleteUser = (req, res, next) => {
-  console.log(req.body);
-  db.query("DELETE FROM user WHERE id= ?", req.body.id, (error, res) => {
+  console.log(req.body.idUser);
+  db.query("DELETE User FROM user WHERE id = ? ", req.body.idUser, (error, results) => {
     if (error) {
       console.log(error);
       return res.status(400).json(error);
@@ -109,9 +109,10 @@ exports.updateUser = (req, res, next) => {
   bcrypt.hash(password, 10).then((hash) => {
     password = hash;
     db.query(
-      `UPDATE user password='${password}'  WHERE email=${email}`,
-      (error, res) => {
+      `UPDATE user SET password ="${password}" WHERE email ="${req.body.email}"`,
+      (error, results) => {
         if (error) {
+          console.log(error);
           return res.status(400).json(error);
         }
         return res
