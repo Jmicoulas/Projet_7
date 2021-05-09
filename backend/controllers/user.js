@@ -76,7 +76,6 @@ exports.login = (req, res, next) => {
 };
 
 exports.deleteUser = (req, res, next) => {
-  console.log(req.body.idUser);
   db.query("DELETE User FROM user WHERE id = ? ", req.body.idUser, (error, results) => {
     if (error) {
       console.log(error);

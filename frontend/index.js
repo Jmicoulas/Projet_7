@@ -79,6 +79,9 @@ function userSignup(user) {
       if (res.status == 400){
         alert("Cette adresse email a déjà un compte créer avec celle-ci");
         resultrqt = false;
+        }else if(res.status == 401){
+          alert("Le mot de passe ne comporte pas au moins 6 charactères dont une majuscule, un chiffre et un symbole.");
+          resultrqt = false;
         }else{ 
           resultrqt = true;
         }
@@ -87,11 +90,10 @@ function userSignup(user) {
     .then((response) => {
      if(resultrqt) {
         alert("Votre compte a bien été créer avec l'adresse mail suivante : " + user.email + ".\nVous pouvez désormais vous connecter avec celle-ci.");
+        document.location.reload();
       }
     })
-    .catch((error) => {
-      alert("Error:", error);
-    });
+    .catch((error) => console.error("Error:", error));
 }
 
 function Connexion() {
@@ -150,3 +152,22 @@ function userLogin(loginUser) {
     })
     .catch((error) => console.error("Error:", error));
 }
+
+function passwordChanged() {
+        var strength = document.getElementById('strength');
+        var strongRegex = new RegExp("^(?=.{12,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
+        var mediumRegex = new RegExp("^(?=.{8,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
+        var enoughRegex = new RegExp("(?=.{6,}).*", "g");
+        var pwd = document.getElementById("signUpPassword");
+        if (pwd.value.length == 0) {
+            strength.innerHTML = '';
+        } else if (false == enoughRegex.test(pwd.value)) {
+            strength.innerHTML = "Le mot de passe renseignée ne contient pas assez de charactères (6 charactères minimum)";
+        } else if (strongRegex.test(pwd.value)) {
+            strength.innerHTML = '<span style="color:green">Le niveau de sécurité de votre mot de passe est fort</span>';
+        } else if (mediumRegex.test(pwd.value)) {
+            strength.innerHTML = '<span style="color:orange">Le niveau de sécurité de votre mot de passe est medium</span>';
+        } else {
+            strength.innerHTML = '<span style="color:red">Le niveau de sécurité de votre mot de passe est faible</span>';
+        }
+    }

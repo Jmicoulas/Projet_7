@@ -1,13 +1,15 @@
 const db = require("../mysqlParam");
 
 exports.publishPost = (req, res, next) => {
-  console.log(req.body);
   const userId = req.body.userId;
   let postParam = {
     postingUser: userId,
     textPost: req.body.text,
-    linkImage:`${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+    linkImage : null
   };
+  if(req.file != undefined){
+    postParam.linkImage =`${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+  }
   db.query("INSERT INTO post SET ?", postParam, (error, response) => {
     if (error) {
       return res.status(400).json({ error });

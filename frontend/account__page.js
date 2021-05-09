@@ -6,11 +6,10 @@ if (user == ""){
 }
 let userId = user.userId;
 let deletedUser;
-let newPassword;
-
 
 main.innerHTML += displayUser(user);
 if (user.roles == 1) {
+  main.innerHTML = "";
   administrating();
 } else {
 fetch("http://localhost:8000/api/getOnePost", {
@@ -51,8 +50,10 @@ function administrating() {
   fetch("http://localhost:8000/api/auth/getAllUsers")
     .then((res) => res.json())
     .then((response) => {
-      console.log("Bingo!", response);
       let i = 1;
+      if (response.length == 0){
+        main.innerHTML +=`<div class="text-center"> Aucun compte n'existe sur la base de donnée </div>`
+      }else{
       response.forEach(element => {
         main.innerHTML +=` 
     <div class="col-5 mx-auto card text-center">
@@ -62,34 +63,35 @@ function administrating() {
         <div class="card-body">
             <h5 class="card-title">${element.prenom} ${element.nom}</h5>
             <p class="card-text">${element.email}</p>
-            <button type="button" id="confirAccount${element.email}" class="btn mt-2" data-toggle="modal" data-target="#SupprAccount">Supprimer ce compte <i class="fas fa-user-times"></i></button>
+            <button type="button" onclick="adminDelete(${element.id})" class="btn mt-2">Supprimer ce compte et ses publications <i class="fas fa-user-times"></i></button>
         </div>
     </div>` ;
-      });
-      adminDelete();
+       });
+      }
     })
-    .catch((error) => console.error("Error:", error));
+  .catch((error) => console.error("Error:", error));
 }
 
-function adminDelete(){
-  let inputDelete = document.getElementById("accountBtn");
-  inputDelete.addEventListener("click", () => { 
-    fetch("http://localhost:8000/api/auth/deleteUser", {
-      // method: "POST",
-      // headers: { "Content-type": "application/json",
-      //             Authorization: `token ${user.token}` 
-      //           },
-      // body: JSON.stringify({"email" : deletedUser}),
-    method: 'post',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ "deletedUser": deletedUser }),
-    })
-      .then((res) => res.json())
-      .then((response) => {
 
-      })
-      .catch((error) => console.error("Error:", error));
-  });
+
+function adminDelete(id){
+  if (confirm("Êtes-vous sûr de vouiloir supprimer ce compte ainsi que ses publications?")) {
+    fetch("http://localhost:8000/api/auth/deleteUser", {
+          method: "DELETE",
+          headers: {
+            Authorization: `token ${user.token}`,
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({ idUser: id }),
+        })
+          .then((res) => res.json())
+          .then((response) => {
+            document.location.reload();
+          })
+          .catch((error) => console.error("Error:", error));
+  } else {
+
+  }
 }
 
 function logOff() {
@@ -202,3 +204,4 @@ $(document).ready(function () {
     e.preventDefault();
   });
 });
+

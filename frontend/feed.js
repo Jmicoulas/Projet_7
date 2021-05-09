@@ -72,19 +72,21 @@ function logOff() {
 }
 
 function displayAllPost(post) {
+  if (post.linkImage != null){
     let postModel = `
     <div class="row justify-content-md-center m-1">
       <div class="col-5">
         <div class="card gedf-card">
         <img src="${
           post.linkImage
-        }" class="card-img-top w-25 mx-auto" alt="Image joint au post de ">
+        }" class="card-img-top w-25 mx-auto" alt="Image joint au post de ${post.prenom} ${post.nom}">
           <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
               <div class="d-flex justify-content-between align-items-center">
                 <div class="ml-2">
                   <div class="h5 m-0" id="postingUserName">${post.prenom} ${post.nom}</div>
                   <div class="h7 text-muted" id="postingUserPosition"></div>
+                  <div class="text-muted h7 mb-2" id="postingDate">${post.postingDate.replace("T"," ").replace(".000Z"," ")}</div>
                 </div>
               </div>
               <!--<button type="button" id="modifier" class="btn mt-2"><i class="fas fa-edit"></i></button>-->
@@ -92,9 +94,6 @@ function displayAllPost(post) {
             </div>
           </div>
           <div class="card-body">
-            <div class="text-muted h7 mb-2" id="postingDate">${post.postingDate.split(
-              "T"
-            )}</div>
             <p class="card-text" id="postContent">
             ${post.textPost}
             </p>
@@ -106,8 +105,40 @@ function displayAllPost(post) {
         </div>
       </div>
     </div>`;
-
     return postModel;
+  }else {
+    let postModel = `
+    <div class="row justify-content-md-center m-1">
+      <div class="col-5">
+        <div class="card gedf-card">
+          <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="ml-2">
+                  <div class="h5 m-0" id="postingUserName">${post.prenom} ${post.nom}</div>
+                  <div class="h7 text-muted" id="postingUserPosition"></div>
+                  <div class="text-muted h7 mb-2" id="postingDate">${post.postingDate.replace("T"," ").replace(".000Z"," ")}</div>
+                </div>
+              </div>
+              <!--<button type="button" id="modifier" class="btn mt-2"><i class="fas fa-edit"></i></button>-->
+                <button type="button" id="confirmation" class="btn mt-2" data-toggle="modal" data-target="#confirmationSuppr"><i class="fas fa-backspace"></i></button>
+            </div>
+          </div>
+          <div class="card-body">
+            
+            <p class="card-text" id="postContent">
+            ${post.textPost}
+            </p>
+          </div>
+          <!-- <div class="card-footer">
+            <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
+            <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
+          </div> -->
+        </div>
+      </div>
+    </div>`;
+    return postModel;
+  }
 }
 
 //bootstrap sidemenu

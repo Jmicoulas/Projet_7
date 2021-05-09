@@ -36,8 +36,9 @@
             </div>
             <div class="form-group mb-2">
               <label for="signUpPassword">Votre mot de passe</label>
-              <input type="password" class="form-control" id="signUpPassword" placeholder="**********"
-                aria-describedby="passwordHelpBlock">
+              <input class="form-control" id="signUpPassword" placeholder="**********"
+                aria-describedby="passwordHelpBlock" name="password" type="password" size="15" maxlength="100" onkeyup="return passwordChanged();">
+                <span id="strength"></span><br>
               <small id="passwordHelpBlock" class="form-text text-muted">
                 Votre mot de passe doit comprendre au moins 6 charactères dont une majuscule, un chiffre et un symbole.
               </small>
@@ -72,7 +73,6 @@
             <div class="form-group mb-2">
               <label for="loginPassword">Mot de passe</label>
               <input type="password" class="form-control" id="loginPassword" placeholder="**********">
-              <a class="small" href="#">Mot de passe oublié?</a>
             </div>
             <button type="button" class="btn mb-2" id="btnLogin" datatoggle="modal" onclick="Connexion()">Vous connecter</button>
           </form>
