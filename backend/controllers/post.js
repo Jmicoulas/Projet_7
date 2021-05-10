@@ -19,7 +19,7 @@ exports.publishPost = (req, res, next) => {
 };
 
 exports.getAllPost = (req, res, next) => {
-  db.query("SELECT User.prenom, User.nom, post.textPost, post.postingDate, post.linkImage, post.id FROM Post INNER JOIN User ON Post.postingUser = User.id ORDER BY post.postingDate DESC", (error, response) => {
+  db.query("SELECT User.prenom, User.email, User.nom, post.textPost, post.postingDate, post.linkImage, post.id FROM Post INNER JOIN User ON Post.postingUser = User.id ORDER BY post.postingDate DESC", (error, response) => {
     let string = JSON.stringify(response);
         let json = JSON.parse(string);
     if (error) {

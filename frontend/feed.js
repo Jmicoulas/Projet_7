@@ -3,6 +3,8 @@ let main = document.getElementById("main");
 if (user == ""){
   window.location.replace("index.html");
 }
+let deletePostBtn = document.getElementById("confirmation");
+// deletePostBtn.style.display = "none";
 
 fetch("http://localhost:8000/api/getAllPosts/")
     .then((res) => {
@@ -15,16 +17,17 @@ fetch("http://localhost:8000/api/getAllPosts/")
         return res.json();
     })
     .then((posts) => {
-        console.log(posts);
         if(resultrqt){        
           for (var i = 0; i < posts.length; i++) {
             let itemHtml = displayAllPost(posts[i]);
             main.innerHTML += itemHtml;
         let postId = posts[0].id;
-        deletePost(postId);
-            }
+        if(posts.email == user.email){
+          deletePost(postId);
         }
-    })
+      }
+    }
+  })
     .catch((error) => console.error("Error:", error));
     
 function publishPost() {
@@ -46,10 +49,8 @@ function publishPost() {
 }
 
 function deletePost(postId){
-  let inputDelete = document.getElementById("deleteBtn");
-  inputDelete.addEventListener("click", () => {
-  console.log("deletePost"+postId)
-      fetch("http://localhost:8000/api/deletePost", {
+  if(confirm ("Êtes-vous sûr de vouloir supprimer cette publication?")){
+    fetch("http://localhost:8000/api/deletePost", {
               method: "DELETE",
               headers: {
                 Authorization: `token ${user.token}`,
@@ -63,15 +64,25 @@ function deletePost(postId){
               document.location.reload();
           })
           .catch((error) => console.error("Error:", error));
-  });
+  }
 }
 
 function logOff() {
     sessionStorage.clear();
     window.location.replace("index.html");
 }
+var mail;
 
 function displayAllPost(post) {
+  mail = post.email;
+  var bool = "d-block";
+  if(user.roles == 2){
+  if(mail != user.email){
+    bool = "d-none";
+  }else{
+    bool = "d-block";
+  }
+  }
   if (post.linkImage != null){
     let postModel = `
     <div class="row justify-content-md-center m-1">
@@ -90,7 +101,7 @@ function displayAllPost(post) {
                 </div>
               </div>
               <!--<button type="button" id="modifier" class="btn mt-2"><i class="fas fa-edit"></i></button>-->
-                <button type="button" id="confirmation" class="btn mt-2" data-toggle="modal" data-target="#confirmationSuppr"><i class="fas fa-backspace"></i></button>
+                <button type="button" id="confirmation" onclick="deletePost(${post.id})" class="btn mt-2 ${bool}"><i class="fas fa-backspace"></i></button>
             </div>
           </div>
           <div class="card-body">
@@ -121,7 +132,7 @@ function displayAllPost(post) {
                 </div>
               </div>
               <!--<button type="button" id="modifier" class="btn mt-2"><i class="fas fa-edit"></i></button>-->
-                <button type="button" id="confirmation" class="btn mt-2" data-toggle="modal" data-target="#confirmationSuppr"><i class="fas fa-backspace"></i></button>
+                <button type="button" id="confirmation" class="btn mt-2  ${bool}" onclick="deletePost()"><i class="fas fa-backspace"></i></button>
             </div>
           </div>
           <div class="card-body">
