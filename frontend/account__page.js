@@ -56,7 +56,7 @@ function administrating() {
       }else{
       response.forEach(element => {
         main.innerHTML +=` 
-    <div class="col-5 mx-auto card text-center">
+    <div class="col-md-5 mx-auto card text-center">
         <div class="card-header">
             Compte n°${i++}
         </div>
@@ -141,7 +141,7 @@ function deleteAccount(userId) {
 
 function displayUser(user){
   let userModel =`
-  <div class="col-5 mx-auto card text-center">
+  <div class="col-md-5 mx-auto card text-center">
       <div class="card-header">
           Détails de votre compte
       </div>
@@ -160,7 +160,7 @@ function displayPost(post) {
   let postModel = `
     <p class="text-center">Historique de vos publications</p>
     <div class="row justify-content-md-center m-1">
-      <div class="col-5">
+      <div class="col-md-5">
         <div class="card gedf-card">
         <img src="${
           post.linkImage

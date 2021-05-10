@@ -75,7 +75,7 @@ function displayAllPost(post) {
   if (post.linkImage != null){
     let postModel = `
     <div class="row justify-content-md-center m-1">
-      <div class="col-5">
+      <div class="col-md-5">
         <div class="card gedf-card">
         <img src="${
           post.linkImage
@@ -109,7 +109,7 @@ function displayAllPost(post) {
   }else {
     let postModel = `
     <div class="row justify-content-md-center m-1">
-      <div class="col-5">
+      <div class="col-md-5">
         <div class="card gedf-card">
           <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">

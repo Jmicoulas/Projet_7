@@ -1,3 +1,7 @@
+const session = sessionStorage.getItem("token") ? JSON.parse(sessionStorage.getItem("token")) : [];
+if (session != ""){
+  window.location.replace("feed.html");
+}
 let user;
 let checkMessage = "";
 let loginUser;

@@ -118,3 +118,17 @@ body {
     margin-left: 2em;
   }
 }
+@media (max-width: 767px){
+  body{
+    padding-bottom: 10em;
+  }
+  #logo{
+    margin-left: 1em;
+  }
+  ul{
+    margin-left: 1em;
+  }
+  #btnLogOff{
+    background-color: #d1515a;
+  }
+}
