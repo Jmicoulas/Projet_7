@@ -10,6 +10,7 @@ let loginUser;
 const checkString = /[a-zA-Z]/;
 const checkNumber = /[0-9]/;
 const checkSpecialCharacter = /[§!@#$%^&*(),.?":{}|<>]/;
+const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 function Inscription() {
   checkInput();
@@ -49,15 +50,20 @@ function checkPrenom() {
       "\n" + "- Veuillez renseigner votre prénom afin de créer votre compte";
   }
 }
+function checkEmail(){
+  email = document.getElementById("signUpEmail").value;
+  if (email == "" ){
+    checkMessage +=
+    "\n" + "- Veuillez renseigner une adresse email afin de créer votre compte";
+  }else if(regexEmail.test(email) == false){
+    checkMessage += "\n" + "L'adresse email n'a pas un format valide. \nExemple de format valide = Exemple@adressemail.com";
+  } 
+}
 
 function checkInput() {
   checkNom();
   checkPrenom();
-  let email = document.getElementById("signUpEmail").value;
-  if (email == "" ){
-    checkMessage +=
-    "\n" + "- Veuillez renseigner une adresse email afin de créer votre compte";
-  }
+  checkEmail();
   let password = document.getElementById("signUpPassword").value;
   if (password == "" ){
     checkMessage +=

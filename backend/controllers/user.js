@@ -10,8 +10,8 @@ exports.signup = (req, res, next) => {
       let string = JSON.stringify(results);
         let json = JSON.parse(string);
       if (json[0].ifEmailExist != 0) {
-        console.log("Cette adresse email est déjà utilisé");
-        return res.status(400).json("Cette adresse email a déjà été utilisé pour créer un compte");
+        message("Cette adresse email est déjà utilisé");
+        return res.status(400).json(message);
       } else {
         bcrypt.hash(user.password, 10).then((hash) => {
           user.password = hash;

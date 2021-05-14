@@ -4,7 +4,8 @@ if (user == ""){
   window.location.replace("index.html");
 }
 let deletePostBtn = document.getElementById("confirmation");
-// deletePostBtn.style.display = "none";
+let checkExtension = true ;
+let mail;
 
 fetch("http://localhost:8000/api/getAllPosts/")
     .then((res) => {
@@ -21,16 +22,28 @@ fetch("http://localhost:8000/api/getAllPosts/")
           for (var i = 0; i < posts.length; i++) {
             let itemHtml = displayAllPost(posts[i]);
             main.innerHTML += itemHtml;
-        let postId = posts[0].id;
-        if(posts.email == user.email){
-          deletePost(postId);
-        }
       }
     }
   })
     .catch((error) => console.error("Error:", error));
     
+
+function checkextension() {
+  var file = document.getElementById("fileInput");
+    if ( /\.(jpe?g|png|gif)$/i.test(file.files[0].name) === false ){ 
+      alert("Impossible de poster votre publication car le fichier joint n'est pas une image au format .jpeg, .png, .jpg ou .gif"); 
+      checkExtension = false ;
+    }
+}
+
 function publishPost() {
+  if(document.getElementById("message").value == "" && document.getElementById("fileInput").files.length == 0 ){
+    alert("Impossible de poster votre publication car elle est vide");
+    }
+    else if(document.getElementById("fileInput").files.length != 0){
+    checkextension()
+    }
+    if (checkExtension){
     const formData = new FormData();
     formData.append("file", document.getElementById("fileInput").files[0]);
     formData.append("text", document.getElementById("message").value);
@@ -46,10 +59,13 @@ function publishPost() {
             document.location.reload();
         })
         .catch((error) => console.error("Error:", error));
+      }
+    
 }
 
 function deletePost(postId){
   if(confirm ("Êtes-vous sûr de vouloir supprimer cette publication?")){
+    console.log("deletepost "+postId);
     fetch("http://localhost:8000/api/deletePost", {
               method: "DELETE",
               headers: {
@@ -71,7 +87,7 @@ function logOff() {
     sessionStorage.clear();
     window.location.replace("index.html");
 }
-var mail;
+
 
 function displayAllPost(post) {
   mail = post.email;
@@ -88,9 +104,7 @@ function displayAllPost(post) {
     <div class="row justify-content-md-center m-1">
       <div class="col-md-5">
         <div class="card gedf-card">
-        <img src="${
-          post.linkImage
-        }" class="card-img-top w-25 mx-auto" alt="Image joint au post de ${post.prenom} ${post.nom}">
+        <img src="${post.linkImage}" class="card-img-top w-50 mx-auto" id="imagePost" alt="Image joint au post de ${post.prenom} ${post.nom}">
           <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
               <div class="d-flex justify-content-between align-items-center">
@@ -132,7 +146,7 @@ function displayAllPost(post) {
                 </div>
               </div>
               <!--<button type="button" id="modifier" class="btn mt-2"><i class="fas fa-edit"></i></button>-->
-                <button type="button" id="confirmation" class="btn mt-2  ${bool}" onclick="deletePost()"><i class="fas fa-backspace"></i></button>
+                <button type="button" id="confirmation" onclick="deletePost(${post.id})" class="btn mt-2  ${bool}" onclick="deletePost()"><i class="fas fa-backspace"></i></button>
             </div>
           </div>
           <div class="card-body">

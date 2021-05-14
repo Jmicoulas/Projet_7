@@ -49,6 +49,7 @@ exports.getOnePost = (req, res, next) => {
 };
 
 exports.deletePost = (req, res, next) => {
+  console.log(req.body);
   db.query("DELETE FROM Post WHERE id= ?",req.body.idpost , (error, response) => {
       if (error) {
         return res.status(400).json(error);
